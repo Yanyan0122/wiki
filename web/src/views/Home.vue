@@ -10,7 +10,7 @@
         <a-sub-menu key="sub1">
           <template #title>
                 <span>
-                  <user-outlined />
+                  <user-outlined/>
                   subnav 111
                 </span>
           </template>
@@ -22,7 +22,7 @@
         <a-sub-menu key="sub2">
           <template #title>
                 <span>
-                  <laptop-outlined />
+                  <laptop-outlined/>
                   subnav 2
                 </span>
           </template>
@@ -34,7 +34,7 @@
         <a-sub-menu key="sub3">
           <template #title>
                 <span>
-                  <notification-outlined />
+                  <notification-outlined/>
                   subnav 3
                 </span>
           </template>
@@ -48,22 +48,38 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      Content
+      <pre>{{ ebooks }}</pre>
+      <pre>{{ ebooks2 }}</pre>
     </a-layout-content>
   </a-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, onMounted, ref, reactive, toRef} from 'vue';
 import axios from 'axios';
 
 export default defineComponent({
   name: 'Home',
-  setup(){
+  setup() {
     console.log("setup")
-    axios.get("http://localhost:8080/ebook/list?name=Spring").then(response=>{
-      console.log((response))
+
+    const ebooks = ref()
+    const ebooks1 = reactive({books: []})
+
+    onMounted(() => { //写一些初始化方法
+      console.log("onMounted")
+      axios.get("http://localhost:8080/ebook/list?name=Spring").then(response => {
+        const data = response.data
+        ebooks.value = data.content
+        ebooks1.books = data.content
+        console.log((response))
+      })
     })
+
+    return {
+      ebooks,
+      ebooks2: toRef(ebooks1,"books")
+    }
   }
 });
 </script>
