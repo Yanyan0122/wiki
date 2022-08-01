@@ -11,7 +11,7 @@
           <template #title>
                 <span>
                   <user-outlined />
-                  subnav 1111
+                  subnav 111
                 </span>
           </template>
           <a-menu-item key="1">option1</a-menu-item>
@@ -55,8 +55,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import axios from 'axios';
 
 export default defineComponent({
   name: 'Home',
+  setup(){
+    console.log("setup")
+    axios.get("http://localhost:8080/ebook/list?name=Spring").then(response=>{
+      console.log((response))
+    })
+  }
 });
 </script>
